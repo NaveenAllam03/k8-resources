@@ -1,0 +1,4 @@
+apiVersion: v1 # version 
+kind: namespace # kind of resource your trying to create
+metadata:
+  name: Ecomm
