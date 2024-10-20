@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: pod
+metadata:
+  name: environment_Sample
+  labels:
+  Annotations:
+spec:
+  containers:
+  - name: pod-1 with environment
+    image: 
+    ports:
+      containerPort: 80
+    env:
+    - name: Demo_Greeting
+      value: "Hello from the env"    

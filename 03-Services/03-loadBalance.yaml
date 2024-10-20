@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: pod
+metadata:
+  name: pod-for-LoadBalancer
+  labels:
+spec:
+  containers: 
+  - name: nginx-pod
+    image: nginx
+    ports:
+    - containerPort: 80
+
+---
+# Load balancer
+apiVersion: v1
+kind: service
+metadata:
+  name: LB-service
+  labels
+spec:
+  type: LoadBalancer
+  selector:
+    name: pod-for-LoadBalancer
+  ports:
+  - protocel: tcp
+    port: 80
+    TargetPort: 80  
+  

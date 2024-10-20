@@ -1,0 +1,36 @@
+# This block is to distribute the System_resources among the containers.
+# There will be soft limit and the hard limit.
+
+# This is the best practice.
+resources: # On this basis we can do Auto-Scaling
+requests:
+  memory: "64MI" # softlimit
+  cpu: "250m"
+limits:
+  memory: "128MI" # Hard limit, This applies when traffic increases, dosen't go beyond that limit.
+  cpu: "500m"  
+
+
+--- 
+apiVersion: v1
+kind: pod
+metadata:
+  name: environment_Sample
+  labels:
+  Annotations:
+spec:
+  containers:
+  - name: pod-1 with environment
+    image:
+    resources: # On this basis we can do Auto-Scaling
+    requests:
+      memory: "64MI" # softlimit
+      cpu: "250m"
+    limits:
+      memory: "128MI" # Hard limit, This applies when traffic increases, dosen't go beyond that limit.
+      cpu: "500m"
+    ports:
+    - containerPort: 80
+    env:
+    - name: Demo_Greeting
+      value: "Hello from the env" 

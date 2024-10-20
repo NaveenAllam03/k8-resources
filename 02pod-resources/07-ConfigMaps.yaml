@@ -1,0 +1,9 @@
+# This config maps are used to store Configurations in kubernetes
+
+apiVersion: v1
+type: ConfigMap
+metadata:
+  name: devops_config
+data: #keep the data you want to store. It should be in key_Value pair. Files can also be stored
+  course: DevOps
+  trainer: "N"

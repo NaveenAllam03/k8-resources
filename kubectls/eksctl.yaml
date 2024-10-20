@@ -1,0 +1,14 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig 
+metadata: 
+  name: roboshop
+  region: us-east-1
+
+ManageNodeGroups:
+- name: spot
+  instanceType: m5.large
+  desiredcapacity: 3
+  spot: true # to get instances for less price
+  ssh: #optional
+    allow: true
+    publicKeyPath: ~/.ssh/ec2_id_rsa.pub

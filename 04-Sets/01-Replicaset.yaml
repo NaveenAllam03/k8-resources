@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset01
+  labels: 
+    app: nginx
+    tier: frontend
+spec:
+  replicas: 3
+  selector: # These are replica set labels
+    MatchLabels:
+      app: nginx
+      tier: frontend
+  template: # Pod defenetion starts here, Pod is a subset of ReplicaSet
+    metadata: 
+      labels:
+        app: nginx
+        tier: frontend
+    spec: 
+      containers:   
+      - name: pod
+        image: nginx    
+      

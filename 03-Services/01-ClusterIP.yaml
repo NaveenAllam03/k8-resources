@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: pod
+metadata:
+  name: multi-container-pod
+  labels: # Labels are very important in kubernetes, Written in key_value pairs
+    course: DevSecOps
+    name: hello!
+# namespace: <mentions a custom namespace to run the container>
+spec:
+  containers:
+  - name: pod-1
+    image: nginx
+    ports:
+    - containerPort: 80
+  - name: pod-2
+    imge: almalinux:8
+    command: ["sleep","300"] 
+
+--- 
+# 1. Cluster_IP is only for Kubernetes internal communications.
+# This are like tags in Terraform, This service will search for details in Selector and attach itself to them.
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service01
+spec: 
+  selector: # This is important to map a service to particular resource.
+  # If you don't mention anything in selector, It will defaultly create Cluster_IP Service.
+    course: DevSecOps
+    name: hello
+  ports: #Client request is recieved here first, Then forwarded to the pod this service is mapped to.
+  - protocol: TCP
+    port: 80 # This port is used by the Service we created
+    TargetPort: 80 # The service_port forwards request to the TargetPort.
+

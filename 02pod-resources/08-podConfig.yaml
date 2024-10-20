@@ -1,0 +1,41 @@
+apiVersion: v1
+type: pod
+metadata: 
+  name: config-pod
+spec:
+  containers:
+  - name: config-pod
+    image: nginx
+    ports:
+    - containerPort: 80
+    env:
+    - name: ref1
+      valuefrom:
+        ConfigMapKeyRef:
+          name: devops_config
+          key: trainer
+    - name: ref2
+      valuefrom:
+        ConfigMapKeyRef:
+          name: devops_config
+          key: course      
+
+---
+
+apiVersion: v1
+kind: pod
+metadata:
+  name: Using_configMap_directly_in_pod
+  nameSpace:
+  labels:
+spec:
+  containers:
+    name: pod1
+    image: nginx
+    ports:
+    - containerPorts: 80
+    envFrom:
+    - ConfigMapRef:
+        name: ConfigMap 
+     
+

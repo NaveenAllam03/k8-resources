@@ -1,0 +1,14 @@
+apiVersion: v1
+type: pod
+metadata:
+  name: pod-1 # name the pod your creating
+  namespace: Ecomm # mention the namespace you crested here.
+  # if you dont mention a namespace. Resource will be created in default namespace
+spec:
+  containers: 
+  - name: pod-1
+    # as this is a public image, k8s pulls it form dockerHub,
+    # If this is your image, you have to mention the full url <DockerHub account name/Image_name:V1>
+    image: nginx # This will take the latest image of the nginx
+    ports:
+    - containerPort: 80  
