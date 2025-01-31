@@ -1,0 +1,9 @@
+
+# Chart.yaml is the mansdatory file for building helm charts
+# This is used to store the information of the chart we are building
+
+apiVersion: v1
+name: nginx
+version: 1.0.0 # Mention Helm-Chart version here 
+description: Building this for Nginx latest deployment # Mention the description for the helm-chart your Building.
+appVersion: 2.1.1 # Mention version of the app you want to deploy.

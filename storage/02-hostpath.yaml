@@ -1,0 +1,1 @@
+# This Hostpath Should happen only in Kube-System NameSpace, Because it belongs to admin. and Host_path configuration is purely a admin task

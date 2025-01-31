@@ -1,0 +1,4 @@
+# Store the values here 
+
+deployment: 
+  replicas: 3

@@ -34,8 +34,8 @@ spec:
     image: nginx
     ports:
     - containerPorts: 80
-    envFrom:
+    envFrom: # instead of ENV we write envFrom, Only when your referring whole ConfigMap file.
     - ConfigMapRef:
-        name: ConfigMap 
+        name: ConfigMap # Name of the config map
      
 

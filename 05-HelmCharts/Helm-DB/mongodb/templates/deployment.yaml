@@ -1,0 +1,67 @@
+# Manifest file for catalogue
+
+# This created ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: configMapforENV
+  namespace: Ecomm-01
+data:
+  MONGO: "true"
+---
+# This creates Deployment 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-catalogueApp
+  namespace: Ecomm-01
+  labels:
+    app: catalogue
+    project: Ecomm
+    tier: Api-tier
+spec:
+  replicaSet: {{.values.deployment.replicas}} # Values is taken from values folder
+  selector:
+    MatchLabels:
+      app: catalogue
+      project: Ecomm
+      tier: Api-tier  
+  template:
+    metadata:
+      Labels:
+        app: catalogue
+        project: Ecomm
+        tier: Api-tier 
+    spec:
+      containers:
+      - name: catalogueApp
+        image: "nginx:{{ .values.deployment.imageVersion }}" # Taken from values folder
+        imagePullPolicy: Always
+        resources:
+          requests:
+          limits:  
+        envFrom: 
+        - ConfigMapRef:
+            name: configMapforENV # It will take ENV from mentioned file name.
+---
+# This creates ClusterIp for communication in the Deployment
+apiVersion: v1
+kind: service
+metadata:
+  name: clusterIP-catalogue
+  namespace: Ecomm-01
+spec:
+  selector:
+    app: catalogue
+    project: Ecomm
+    tier: Api-tier
+  ports:
+  - protocol: TCP
+    port: 8080 # servicePort
+    targetPort: 8080 # ContainerPort
+
+      
+                
+             
+              
+                  

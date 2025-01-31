@@ -1,0 +1,31 @@
+# Role creation
+
+# This the sample role we are creating for a newly joined employee.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: 
+   namespace: roboshop  
+   name: RoleAssign
+rules: 
+- apiGroups: [""] # "" This indicates the core apiGroups.
+  resources: ["pods"] # Can call as Nouns
+  verbs: ["get","watch","list"] # Actions he can take on pods in the mentioned NameSpace.
+# With this rules he can only fetch resources from the core apiGroup and go get,watch,list Operations.
+
+---
+# Binding role to the user
+
+# This file is to bind the created role to the specific user or users.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding 
+metadata:
+  namespace: roboshop
+  name: RoleBind
+subjects: # creating and Specifying User
+- kind: user
+  name: ramesh 
+  apiGroup: rbac.authorization.k8s.io 
+roleRef: # Assigning the created role to the created user as referrence 
+  kind: Role
+  name: RoleAssign
+  apiGroup: rbac.authorization.k8s.io    

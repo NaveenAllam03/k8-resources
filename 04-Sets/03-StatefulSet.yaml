@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: 
+  name: Web
+  labels:
+spec: 
+  selector: 
+    matchabels:     
+      app: Nginx
+serviceName: "nginx"
+replicas: 3
+minReadySeconds: 10
+template: 
+  metadata:
+    labels:
+      app: 
+  spec: 
+    terminationGracePeriodSeconds: 10
+    containers:
+    - name: nginx
+    

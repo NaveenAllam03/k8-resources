@@ -1,0 +1,6 @@
+# All DB's Should be present in this namespace.
+
+apiVersion: v1 
+kind: namespace 
+metadata: 
+  name: Ecomm-01   

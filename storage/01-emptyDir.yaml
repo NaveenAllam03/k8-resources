@@ -1,0 +1,125 @@
+# apiVersion: apps/v1 
+# kind: deployment 
+# metadata: 
+#   name: pod-1
+#   Labels:
+#     app: nginx 
+# spec: 
+#   replicas: 3
+#   selector:  
+#     MatchLabels:
+#       app: nginx
+#   template:
+#     metadata:
+#       name: nginx
+#       labels: 
+#         app: nginx  
+#     spec:      
+#       containers:
+#       - name: nginx
+#         image: latest    
+
+# kubectl create deployment --image= httpd:latest
+
+---
+# Configuring Filebeat
+apiVersion: v1 
+kind: ConfigMap
+metadata: 
+  name: filebeat-config 
+  namespace:
+  labels: 
+    app: Filebeat
+data: 
+  filebeat.yml: |
+    filebeat: 
+      config:
+        modules: 
+          path: /usr/share/filebeat/modules.d/*.yml
+          reload: 
+            enabled: true
+      modules: 
+      - module: nginx
+        access: 
+          var.paths: ["/var/log/nginx/access.log*"]
+        error:
+          var.paths: ["/var/log/nginx/error.log*"]  
+    output: 
+      elasticSearch: 
+        hosts: ["elasticSearch:9200"]         
+
+--- 
+# Configuring sidecar
+apiVersion: apps/v1
+kind: deployment
+metadata:
+  name: deploy-web
+  namespace: Ecomm-01
+  labels:
+    name: catalogueApp
+    project: Ecomm
+    tier: Webtier    
+spec: 
+  replicas: 1
+  selector:
+    MatchLabels: 
+      app: catalogueApp
+      project: Ecomm
+      tier: Webtier
+  template:
+    metadata: 
+      Labels:
+        app: catalogueApp
+        project: Ecomm
+        tier: Webtier  
+    spec:
+    containers:     
+    - name: CatalogueApp # This container runs nginx
+      image: naveenallam/catalogueApp:v1
+      imagePullPolicy: Always
+      volumeMounts: # Use volume like this, if you want to mount it for a specific container
+      - name: nginx-logs # volumeMount-1
+        mountpath: var/log/nginx
+       
+    - name: filebeat #side-car container
+      image: docker.elastic.co/beats/filebeat:latest
+      volumeMounts:
+      - name: nginx-logs
+        mountpath: var/log/nginx 
+      - name: filebeat-config
+        mountpath: /usr/share/filebeat/filebeat.yaml   
+        subpath: filebeat.yaml
+
+    voluemes: # Here we mounted the volueme in the container folder, Use VoluemeMount to connect to container
+    - name: web-vol # volume-1
+      ConfigMap: 
+        name: web
+        items: 
+        - key: nginx.conf
+          path: nginx.conf
+    - name: nginx-logs # volume-2
+      emptyDir: {}   
+    - name: filebeat-config # volume-3
+      ConfigMap:
+        name: filebeat-config
+        items:
+        - key: filebeat.yaml
+          path: filebeat.yaml     
+
+---               
+
+# apiVersion: v1 
+# kind: pod 
+# metadata: 
+#   name: httpd-pod
+# spec: 
+#   containers:
+#   - name: httpd-container
+#     image: nginx:latest
+#     resources: 
+#       requests:
+#         Memory: "15mi"
+#         CPU: "100m"  
+#       limits:
+#         memory: "20mi"
+#         CPU: "100m"   

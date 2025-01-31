@@ -1,0 +1,6 @@
+# This should be present in the Root folder of the Helm-Chart.
+# This file is used to store the values
+
+deployment: 
+  replicas: 3
+  imageVersion: latest

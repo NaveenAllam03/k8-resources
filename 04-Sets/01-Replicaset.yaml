@@ -1,3 +1,5 @@
+# Generally used to create multiple replicas of a pod.
+
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
@@ -8,9 +10,10 @@ metadata:
 spec:
   replicas: 3
   selector: # These are replica set labels
-    MatchLabels:
+    MatchLabels: # This will create replicas of pods with this labels.
       app: nginx
       tier: frontend
+# Above part is executed first
   template: # Pod defenetion starts here, Pod is a subset of ReplicaSet
     metadata: 
       labels:

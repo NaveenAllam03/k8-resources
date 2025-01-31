@@ -1,0 +1,22 @@
+
+# This is for Horizontal Autoscaling
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscalar
+metadata: 
+  name: mongodb
+  namespace: roboshop 
+spec: 
+  scaleTargetRef: 
+    apiVersion: apps/v1 
+    name: deploy-mongodb
+    kind: Deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics: 
+  - type: resources
+    resource: 
+      name: cpu 
+      target: 
+        type: utilization 
+        averageUtilization: {{ .values.hpa.averageUtilization}}  

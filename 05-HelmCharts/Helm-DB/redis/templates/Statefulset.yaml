@@ -1,0 +1,74 @@
+# # Manifest file for catalogue
+
+# # This created ConfigMap
+# apiVersion: v1
+# kind: ConfigMap
+# metadata: 
+#   name: configMapforENV
+#   namespace: Ecomm-01
+# data:
+#   MONGO: "true"
+---
+# This creates Deployment 
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  namespace: Ecomm-01
+  labels:
+    app: redis
+    project: Ecomm
+    tier: db-tier
+spec:
+  selector:
+    MatchLabels:
+      app: redis
+      project: Ecomm
+      tier: db-tier  
+  serviceName: "redis"    
+  replicas: {{ .Values.statefulset.replicas }}
+  template:
+    metadata:
+      labels:
+        app: redis
+        project: Ecomm
+        tier: db-tier 
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: redis
+          mountpath: /data  
+  volumeClaimTemplates: 
+  - metadata:
+      name: redis 
+    spec: 
+      accessModes: [ "ReadWriteOnce"]     
+      storgeClassName: "ebs-sc"
+      resources: 
+        requests: 
+          storage: 1Gi    
+---
+# This creates ClusterIp for communication in the Deployment
+apiVersion: v1
+kind: service
+metadata:
+  name: clusterIP-redis
+  namespace: Ecomm-01
+spec:
+  selector:
+    app: redis
+    project: Ecomm
+    tier: db-tier
+  ports:
+  - protocol: TCP
+    port: 6379 # servicePort
+    targetPort: 6379 # ContainerPort
+
+      
+                
+             
+              
+                  

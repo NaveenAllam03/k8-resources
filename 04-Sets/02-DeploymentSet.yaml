@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment01
+  labels:
+    app: nginx
+    demo: deployment
+spec:
+  replicas: 3
+  selector:
+    MatchLabels:
+      app: nginx
+      demo: deployment
+  template: # This is pod definition
+    metadata:
+      labels: 
+        app: nginx
+        demo: deployment
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+      ports:
+      - conatainerPorts: 80          
+      

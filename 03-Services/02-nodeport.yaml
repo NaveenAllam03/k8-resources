@@ -3,7 +3,7 @@ kind: pod
 metadata:
   name: multi-container-pod
   labels: # Labels are very important in kubernetes, Written in key_value pairs
-    course: DevSecOps
+    course: DevSecOps!
     name: hello!
 # namespace: <mentions a custom namespace to run the container>
 spec:
@@ -26,9 +26,9 @@ spec:
   type: NodePort # Mention it here to create a NordPort_service. 
   selector: # This is important to map a service to particular resource.
   # If you don't mention anything in selector, It will defaultly create Cluster_IP Service.
-    course: DevSecOps
-    name: hello
+    course: DevSecOps!
+    name: hello!
   ports: #Client request is recieved here first, Then forwarded to the pod this service is mapped to.
   - protocol: TCP
     port: 80 # This port is used by the Service we created
-    TargetPort: 80 # The service_port forwards request to the TargetPort.
+    TargetPort: 80 # This is the container_port.

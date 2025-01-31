@@ -23,7 +23,7 @@ spec:
   - name: pod-1 with environment
     image:
     resources: # On this basis we can do Auto-Scaling
-    requests:
+    requests: # When container starts, it is allocated with this memory.
       memory: "64MI" # softlimit
       cpu: "250m"
     limits:
